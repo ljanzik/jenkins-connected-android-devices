@@ -67,7 +67,7 @@ public class AndroidDeviceList implements RootAction {
 						final int resultDetails = launcher
 								.launch()
 								.cmds(new ArgumentListBuilder(
-										"/Users/soerenleif/android-sdks/platform-tools/adb",
+										"/Users/leifjanzik/android-sdks/platform-tools/adb",
 										"-s", device, "shell", "getprop"))
 								.stdout(deviceStream).stderr(errorStream)
 								.join();
