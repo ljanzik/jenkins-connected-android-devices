@@ -1,7 +1,6 @@
 package com.thoughtsonmobile.jenkins.androiddevices;
 
 import hudson.Extension;
-import hudson.Launcher;
 import hudson.Launcher.LocalLauncher;
 import hudson.model.RootAction;
 import hudson.model.TaskListener;
@@ -20,16 +19,16 @@ import java.util.regex.Pattern;
 import jenkins.model.Jenkins;
 
 import com.thoughtsonmobile.jenkins.androiddevices.command.AdbDevicesCommand;
-import com.thoughtsonmobile.jenkins.androiddevices.model.AndroidDevice;;
+import com.thoughtsonmobile.jenkins.androiddevices.model.AndroidDevice;
 
 @Extension
 public class AndroidDeviceList implements RootAction {
 
 	private static class FetchTask implements
 			Callable<List<AndroidDevice>, IOException> {
-		
+
 		private final TaskListener listener;
-		
+
 		private FetchTask(final TaskListener listener) {
 			this.listener = listener;
 		}
@@ -42,7 +41,7 @@ public class AndroidDeviceList implements RootAction {
 				final ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 				LocalLauncher launcher = new LocalLauncher(listener);
-				
+
 				final int result = launcher.launch()
 						.cmds(command.getCommand()).stdout(stream).join();
 				if (result == 0) {
@@ -128,7 +127,6 @@ public class AndroidDeviceList implements RootAction {
 	private volatile List<AndroidDevice> devices;
 
 	public AndroidDeviceList() {
-		System.out.println("HEEEELLLLOOOOO");
 		devices = new ArrayList<AndroidDevice>(); // getConnectedDevices();
 		devices = getConnectedDevices();
 	}
@@ -148,7 +146,7 @@ public class AndroidDeviceList implements RootAction {
 	}
 
 	public String getIconFileName() {
-		return "/plugin/android-devices/iphone.png";
+		return "/plugin/android-devices/android.png";
 	}
 
 	public String getUrlName() {
