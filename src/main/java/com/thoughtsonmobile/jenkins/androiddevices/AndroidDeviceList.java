@@ -100,12 +100,9 @@ public class AndroidDeviceList implements RootAction {
 													.get(AdbProperties.PRODUCT_MODEL
 															.toString());
 							final AndroidDevice androidDevice = new AndroidDevice(
-									device, deviceName, ip,
-									deviceDetails.get(AdbProperties.VERSION
-											.toString()),
-									Integer.valueOf(deviceDetails
-											.get(AdbProperties.VERSION_SDK
-													.toString())));
+									device, "", "",
+									"",
+									0);
 							deviceList.add(androidDevice);
 							System.out.println(androidDevice.toString());
 
