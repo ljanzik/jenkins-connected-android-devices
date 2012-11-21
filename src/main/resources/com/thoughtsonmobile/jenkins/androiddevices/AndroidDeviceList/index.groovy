@@ -54,6 +54,11 @@ l.layout {
 					}
 				}
 			}
+			f.form(method:"POST",action:"refresh") {
+            div (align:"right",style:"margin-top:1em") {
+                f.submit(value:_("Refresh"))
+            }
+        }
 		}
     }
 }

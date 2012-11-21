@@ -18,13 +18,17 @@ import java.util.regex.Pattern;
 
 import jenkins.model.Jenkins;
 
+import org.kohsuke.stapler.HttpResponse;
+import org.kohsuke.stapler.HttpResponses;
+import org.kohsuke.stapler.interceptor.RequirePOST;
+
 import com.thoughtsonmobile.jenkins.androiddevices.command.AdbDevicesCommand;
 import com.thoughtsonmobile.jenkins.androiddevices.model.AndroidDevice;
 
 @Extension
 public class AndroidDeviceList implements RootAction {
 
-	private static class FetchTask implements
+	 private static class FetchTask implements
 			Callable<List<AndroidDevice>, IOException> {
 
 		private final TaskListener listener;
@@ -104,7 +108,7 @@ public class AndroidDeviceList implements RootAction {
 									"",
 									0);
 							deviceList.add(androidDevice);
-							System.out.println(androidDevice.toString());
+//							System.out.println(androidDevice.toString());
 
 						} else {
 							System.out.println(new String(errorStream
@@ -127,6 +131,12 @@ public class AndroidDeviceList implements RootAction {
 		devices = new ArrayList<AndroidDevice>(); // getConnectedDevices();
 		devices = getConnectedDevices();
 	}
+
+	@RequirePOST
+	    public HttpResponse doRefresh() {
+	        getConnectedDevices();
+	        return HttpResponses.redirectToDot();
+	    }
 
 	public List<AndroidDevice> getConnectedDevices() {
 		final FetchTask task = new FetchTask(StreamTaskListener.NULL);
