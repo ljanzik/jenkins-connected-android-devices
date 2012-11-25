@@ -44,12 +44,11 @@ public class AndroidDeviceList implements RootAction {
 
 				final ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-				LocalLauncher launcher = new LocalLauncher(listener);
+				final LocalLauncher launcher = new LocalLauncher(listener);
 
 				final int result = launcher.launch()
 						.cmds(command.getCommand()).stdout(stream).join();
 				if (result == 0) {
-					stream.close();
 					final String deviceResults = new String(
 							stream.toByteArray());
 					final Pattern pattern = Pattern.compile(
@@ -75,8 +74,6 @@ public class AndroidDeviceList implements RootAction {
 										"-s", device, "shell", "getprop"))
 								.stdout(deviceStream).stderr(errorStream)
 								.join();
-						deviceStream.close();
-						launcher = null;
 						if (resultDetails == 0) {
 
 							final String deviceProperties = new String(
@@ -93,7 +90,9 @@ public class AndroidDeviceList implements RootAction {
 									.get(AdbProperties.DEVICE_IP.toString())
 									: deviceDetails.get(AdbProperties.WLAN_IP
 											.toString());
-							final String deviceName = deviceDetails.get(
+							final String deviceName = deviceDetails
+									.get(AdbProperties.PRODUCT_MODEL.toString()) != null
+									&& deviceDetails.get(
 									AdbProperties.PRODUCT_MODEL.toString())
 									.equals("ST70104-1") ? "TrekStor SurfTab breeze"
 									: deviceDetails
@@ -104,9 +103,12 @@ public class AndroidDeviceList implements RootAction {
 													.get(AdbProperties.PRODUCT_MODEL
 															.toString());
 							final AndroidDevice androidDevice = new AndroidDevice(
-									device, "", "",
-									"",
-									0);
+									device, deviceName, ip,
+									deviceDetails.get(AdbProperties.VERSION
+											.toString()),
+									Integer.valueOf(deviceDetails
+											.get(AdbProperties.VERSION_SDK
+													.toString())));
 							deviceList.add(androidDevice);
 //							System.out.println(androidDevice.toString());
 
